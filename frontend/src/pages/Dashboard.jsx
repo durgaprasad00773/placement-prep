@@ -22,7 +22,13 @@ const Dashboard = () => {
       <nav className="bg-white shadow-sm px-8 py-4 flex justify-between items-center" style={{ borderBottom: '2px solid #c5d5ea' }}>
         <h1 className="text-xl font-bold" style={{ color: '#1a3a6b' }}>PrepTrack</h1>
         <div className="flex items-center gap-4">
-          <span className="text-sm" style={{ color: '#4a6fa5' }}>{user?.name}</span>
+          <span
+            onClick={() => navigate('/profile')}
+            className="text-sm font-medium cursor-pointer hover:underline"
+            style={{ color: '#4a6fa5' }}
+          >
+            {user?.name}
+          </span>
           <button
             onClick={handleLogout}
             className="text-sm text-white px-4 py-2 rounded-lg font-medium transition"

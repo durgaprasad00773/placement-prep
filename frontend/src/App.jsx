@@ -5,6 +5,7 @@ import Login from './pages/Login.jsx';
 import Signup from './pages/Signup.jsx';
 import Dashboard from './pages/Dashboard.jsx';
 import DSATracker from './pages/DSATracker.jsx';
+import Profile from './pages/Profile.jsx';
 
 function App() {
   return (
@@ -27,6 +28,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <DSATracker />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <Profile />
               </ProtectedRoute>
             }
           />
