@@ -6,6 +6,7 @@ import Signup from './pages/Signup.jsx';
 import Dashboard from './pages/Dashboard.jsx';
 import DSATracker from './pages/DSATracker.jsx';
 import Profile from './pages/Profile.jsx';
+import OATracker from './pages/OATracker.jsx';
 
 function App() {
   return (
@@ -36,6 +37,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <Profile />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/oa-tracker"
+            element={
+              <ProtectedRoute>
+                <OATracker />
               </ProtectedRoute>
             }
           />
