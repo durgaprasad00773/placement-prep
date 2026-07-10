@@ -11,10 +11,11 @@ const Dashboard = () => {
   };
 
   const features = [
-    { label: 'DSA Tracker', description: 'Track your problem solving progress', icon: '🧩', path: '/dsa-tracker' },
-    { label: 'OA Records', description: 'Manage online assessments', icon: '📝', path: '/oa-tracker' },
-    { label: 'Notes', description: 'Store your study notes', icon: '📒', path: '/notes' },
-  ];
+  { label: 'DSA Tracker', description: 'Track your problem solving progress', icon: '🧩', path: '/dsa-tracker' },
+  { label: 'OA Records', description: 'Manage online assessments', icon: '📝', path: '/oa-tracker' },
+  { label: 'Notes', description: 'Store your study notes', icon: '📒', path: '/notes' },
+  { label: 'Resume Manager', description: 'Store and manage resume versions', icon: '📄', path: '/resume-manager' },
+];
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#f0f4f8' }}>

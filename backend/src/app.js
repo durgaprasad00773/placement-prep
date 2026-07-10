@@ -4,6 +4,8 @@ import authRoutes from './routes/auth.routes.js';
 import problemsRoutes from './routes/problems.routes.js';
 import profileRoutes from './routes/profile.routes.js';
 import oaRoutes from './routes/oa.routes.js';
+import notesRoutes from './routes/notes.routes.js';
+import resumeRoutes from './routes/resume.routes.js';
 
 const app = express();
 
@@ -29,6 +31,8 @@ app.use('/api/auth', authRoutes);
 app.use('/api/problems', problemsRoutes);
 app.use('/api/profile', profileRoutes);
 app.use('/api/oa', oaRoutes);
+app.use('/api/notes', notesRoutes);
+app.use('/api/resumes', resumeRoutes);
 
 app.get('/health', (req, res) => {
   res.json({ status: 'ok' });

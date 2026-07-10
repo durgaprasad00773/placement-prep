@@ -7,6 +7,8 @@ import Dashboard from './pages/Dashboard.jsx';
 import DSATracker from './pages/DSATracker.jsx';
 import Profile from './pages/Profile.jsx';
 import OATracker from './pages/OATracker.jsx';
+import Notes from './pages/Notes.jsx';
+import ResumeManager from './pages/ResumeManager.jsx';
 
 function App() {
   return (
@@ -45,6 +47,22 @@ function App() {
             element={
               <ProtectedRoute>
                 <OATracker />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/notes"
+            element={
+              <ProtectedRoute>
+                <Notes />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/resume-manager"
+            element={
+              <ProtectedRoute>
+                <ResumeManager />
               </ProtectedRoute>
             }
           />
