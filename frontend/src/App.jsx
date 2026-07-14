@@ -9,6 +9,7 @@ import Profile from './pages/Profile.jsx';
 import OATracker from './pages/OATracker.jsx';
 import Notes from './pages/Notes.jsx';
 import ResumeManager from './pages/ResumeManager.jsx';
+import Analytics from './pages/Analytics.jsx';
 
 function App() {
   return (
@@ -63,6 +64,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <ResumeManager />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/analytics"
+            element={
+              <ProtectedRoute>
+                <Analytics />
               </ProtectedRoute>
             }
           />

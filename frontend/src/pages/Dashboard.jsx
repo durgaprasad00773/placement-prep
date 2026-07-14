@@ -15,6 +15,7 @@ const Dashboard = () => {
   { label: 'OA Records', description: 'Manage online assessments', icon: '📝', path: '/oa-tracker' },
   { label: 'Notes', description: 'Store your study notes', icon: '📒', path: '/notes' },
   { label: 'Resume Manager', description: 'Store and manage resume versions', icon: '📄', path: '/resume-manager' },
+  { label: 'Analytics', description: 'View your prep progress and stats', icon: '📊', path: '/analytics' },
 ];
 
   return (
