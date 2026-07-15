@@ -11,10 +11,10 @@ const Dashboard = () => {
   };
 
   const features = [
-  { label: 'DSA Tracker', description: 'Track your problem solving progress', icon: '🧩', path: '/dsa-tracker' },
+  { label: 'DSA Tracker', description: 'Track your problem solving progress', icon:<img src="/dsa_logo.png" alt="Resume" className="w-8 h-8 object-contain" />, path: '/dsa-tracker' },
   { label: 'OA Records', description: 'Manage online assessments', icon: '📝', path: '/oa-tracker' },
   { label: 'Notes', description: 'Store your study notes', icon: '📒', path: '/notes' },
-  { label: 'Resume Manager', description: 'Store and manage resume versions', icon: '📄', path: '/resume-manager' },
+  { label: 'Resume Manager', description: 'Store and manage resume versions', icon: <img src="resume_logo.png" alt="Resume" className="w-8 h-8 object-contain" />, path: '/resume-manager' },
   { label: 'Analytics', description: 'View your prep progress and stats', icon: '📊', path: '/analytics' },
   { label: 'Revision List', description: 'Problems marked for revision', icon: '📌', path: '/revision-list' },
 ];
