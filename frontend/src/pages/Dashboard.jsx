@@ -19,6 +19,13 @@ const Dashboard = () => {
   { label: 'Revision List', description: 'Problems marked for revision', icon: '📌', path: '/revision-list' },
 ];
 
+const getInitials = (name) => {
+  if (!name) return 'U';
+  const parts = name.trim().split(' ');
+  if (parts.length === 1) return parts[0][0].toUpperCase();
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+};
+
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#f0f4f8' }}>
       {/* Navbar */}
@@ -28,13 +35,16 @@ const Dashboard = () => {
             <h1 className="text-xl font-bold" style={{ color: '#1a3a6b' }}>PrepTrack</h1>
           </div>
         <div className="flex items-center gap-4">
-          <span
+          <div
             onClick={() => navigate('/profile')}
-            className="text-sm font-medium cursor-pointer hover:underline"
-            style={{ color: '#4a6fa5' }}
+            className="w-9 h-9 rounded-full flex items-center justify-center cursor-pointer font-bold text-sm text-white transition"
+            style={{ backgroundColor: '#1a3a6b' }}
+            onMouseEnter={e => e.currentTarget.style.backgroundColor = '#142d54'}
+            onMouseLeave={e => e.currentTarget.style.backgroundColor = '#1a3a6b'}
+            title={user?.name}
           >
-            {user?.name}
-          </span>
+            {getInitials(user?.name)}
+          </div>
           <button
             onClick={handleLogout}
             className="text-sm text-white px-4 py-2 rounded-lg font-medium transition"
@@ -49,7 +59,7 @@ const Dashboard = () => {
 
       <div className="max-w-5xl mx-auto p-8">
         <h2 className="text-2xl font-bold mb-2" style={{ color: '#1a3a6b' }}>
-          Welcome back, {user?.name} 👋
+          Welcome back, {user?.name}
         </h2>
         <p className="text-sm mb-8" style={{ color: '#4a6fa5' }}>
           Your placement prep dashboard
