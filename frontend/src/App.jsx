@@ -10,13 +10,15 @@ import OATracker from './pages/OATracker.jsx';
 import Notes from './pages/Notes.jsx';
 import ResumeManager from './pages/ResumeManager.jsx';
 import Analytics from './pages/Analytics.jsx';
+import RevisionList from './pages/RevisionList.jsx';
+import LandingPage from './pages/LandingPage.jsx';
 
 function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Navigate to="/login" replace />} />
+          <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route
@@ -72,6 +74,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <Analytics />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/revision-list"
+            element={
+              <ProtectedRoute>
+                <RevisionList />
               </ProtectedRoute>
             }
           />

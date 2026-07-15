@@ -73,6 +73,15 @@ const DSATracker = () => {
     }
   };
 
+  const handleToggleRevision = async (id, currentState) => {
+    try {
+      await api.put(`/problems/${id}/revision`);
+      fetchProblems();
+    } catch (err) {
+      setError('Failed to update revision status');
+    }
+``};
+
   const clearFilters = () => {
     setSearch('');
     setFilterDifficulty('');
@@ -113,7 +122,10 @@ const DSATracker = () => {
     <div className="min-h-screen" style={{ backgroundColor: '#f0f4f8' }}>
       {/* Navbar */}
       <nav className="bg-white shadow-sm px-8 py-4 flex justify-between items-center" style={{ borderBottom: '2px solid #c5d5ea' }}>
-        <h1 className="text-xl font-bold" style={{ color: '#1a3a6b' }}>PrepTrack</h1>
+        <div className="flex items-center gap-2">
+            <img src="https://imgs.search.brave.com/4num3GouoaQ-kNcQtc1glN1ALOpz4Zm_mtaVFLpK-_s/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9maWxl/cy5wcmVwaW5zdGEu/Y29tLzIwMjIvMDcv/cGxhY2VtZW50LXBy/ZXBhcmF0aW9uLWJv/b2tzLWZvci1lbmdp/bmVlcmluZy1zdHVk/ZW50cy53ZWJw" alt="PrepTrack" className="w-8 h-8 object-contain" />
+            <h1 className="text-xl font-bold" style={{ color: '#1a3a6b' }}>PrepTrack</h1>
+          </div>
         <a href="/dashboard" className="text-sm font-medium" style={{ color: '#4a6fa5' }}>← Dashboard</a>
       </nav>
 
@@ -358,6 +370,27 @@ const DSATracker = () => {
                         style={{ backgroundColor: '#fee2e2', color: '#dc2626' }}>
                         Delete
                       </button>
+                    </td>
+                    <td className="px-4 py-3">
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => handleToggleRevision(p.id, p.needs_revision)}
+                          className="text-xs px-3 py-1 rounded-lg transition"
+                          style={{
+                            backgroundColor: p.needs_revision ? '#fffbeb' : '#f0f4f8',
+                            color: p.needs_revision ? '#d97706' : '#4a6fa5'
+                          }}
+                        >
+                          {p.needs_revision ? '📌 Revision' : 'Mark Revision'}
+                        </button>
+                        <button
+                          onClick={() => handleDelete(p.id)}
+                          className="text-xs px-3 py-1 rounded-lg transition"
+                          style={{ backgroundColor: '#fee2e2', color: '#dc2626' }}
+                        >
+                          Delete
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}

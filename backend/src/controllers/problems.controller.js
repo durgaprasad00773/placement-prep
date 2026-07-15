@@ -124,3 +124,66 @@ export const deleteProblem = async (req, res) => {
     res.status(500).json({status: 'error', message: 'Internal server error' });
   }
 };
+
+// Toggle revision flag
+export const toggleRevision = async (req, res) => {
+  const { id } = req.params;
+  const user_id = req.user.userId;
+
+  try {
+    const existing = await pool.query(
+      'SELECT * FROM problems WHERE id = $1 AND user_id = $2',
+      [id, user_id]
+    );
+
+    if (existing.rows.length === 0) {
+      return res.status(404).json({ message: 'Problem not found' });
+    }
+
+    const problem = existing.rows[0];
+    const newRevisionState = !problem.needs_revision;
+
+    const result = await pool.query(
+      `UPDATE problems SET
+        needs_revision = $1,
+        last_revised_at = $2,
+        revision_count = $3
+       WHERE id = $4 AND user_id = $5
+       RETURNING *`,
+      [
+        newRevisionState,
+        newRevisionState ? new Date() : problem.last_revised_at,
+        newRevisionState ? problem.revision_count + 1 : problem.revision_count,
+        id,
+        user_id
+      ]
+    );
+
+    res.status(200).json({
+      message: newRevisionState ? 'Marked for revision' : 'Removed from revision',
+      problem: result.rows[0]
+    });
+  } catch (error) {
+    console.error('Toggle revision error:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+// Get all problems marked for revision
+export const getRevisionList = async (req, res) => {
+  const user_id = req.user.userId;
+
+  try {
+    const result = await pool.query(
+      `SELECT * FROM problems 
+       WHERE user_id = $1 AND needs_revision = true
+       ORDER BY revision_count DESC, last_revised_at ASC`,
+      [user_id]
+    );
+
+    res.status(200).json({ problems: result.rows });
+  } catch (error) {
+    console.error('Get revision list error:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
