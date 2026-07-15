@@ -99,7 +99,9 @@ export const deleteResume = async (req, res) => {
     const resume = existing.rows[0];
     const urlParts = resume.url.split('/');
     const publicId = `placement-prep/resumes/${urlParts[urlParts.length - 1].split('.')[0]}`;
-    await cloudinary.uploader.destroy(publicId, { resource_type: 'image' });
+    const response = await cloudinary.uploader.destroy(publicId, {
+      resource_type: "image",
+    });
 
     // Delete from DB
     await pool.query(
