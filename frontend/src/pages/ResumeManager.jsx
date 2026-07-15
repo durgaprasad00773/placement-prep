@@ -11,6 +11,7 @@ const ResumeManager = () => {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [viewingId, setViewingId] = useState(null);
   const navigate = useNavigate();
 
   const fetchResumes = async () => {
@@ -85,6 +86,19 @@ const ResumeManager = () => {
       setError('Failed to set active resume');
     }
   };
+
+  const handleViewResume = async (id) => {
+  setViewingId(id);
+  setError('');
+  try {
+    const res = await api.get(`/resumes/${id}/file`);
+    window.open(res.data.url, '_blank', 'noopener,noreferrer');
+  } catch (err) {
+    setError(err.response?.data?.message || 'Failed to load resume file');
+  } finally {
+    setViewingId(null);
+  }
+};
 
   const handleDelete = async (id) => {
     if (!window.confirm('Delete this resume?')) return;
@@ -245,11 +259,12 @@ const ResumeManager = () => {
                   </div>
 
                   <div className="flex gap-2">
-                    <a href={resume.url} target="_blank" rel="noreferrer"
+                    <button onClick={() => handleViewResume(resume.id)}
+                      disabled={viewingId === resume.id}
                       className="text-xs px-3 py-1 rounded-lg font-medium"
                       style={{ backgroundColor: '#eff6ff', color: '#2e86de' }}>
-                      View PDF
-                    </a>
+                      {viewingId === resume.id ? 'Loading...' : 'View PDF'}
+                  </button>
                     {!resume.is_active && (
                       <button onClick={() => handleSetActive(resume.id)}
                         className="text-xs px-3 py-1 rounded-lg font-medium"

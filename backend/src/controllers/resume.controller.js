@@ -24,6 +24,9 @@ export const addResume = async (req, res) => {
       [user_id, title, url, version || null, notes || null]
     );
 
+    console.log("Cloudinary URL:", url);
+    console.log("req.file:", req.file);
+
     res.status(201).json({ message: 'Resume uploaded', resume: result.rows[0] });
   } catch (error) {
     console.error('Add resume error:', error);
@@ -109,4 +112,23 @@ export const deleteResume = async (req, res) => {
     console.error('Delete resume error:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
+};
+
+//View pdf
+export const getResumeFile = async (req, res) => {
+  const { id } = req.params;
+  const user_id = req.user.userId;
+
+  const result = await pool.query(
+    "SELECT url FROM resumes WHERE id = $1 AND user_id = $2",
+    [id, user_id]
+  );
+
+  if (result.rows.length === 0) {
+    return res.status(404).json({ message: "Resume not found" });
+  }
+
+  res.json({
+    url: result.rows[0].url,
+  });
 };

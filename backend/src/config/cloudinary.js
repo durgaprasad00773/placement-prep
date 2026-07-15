@@ -16,7 +16,7 @@ const storage = new CloudinaryStorage({
   params: {
     folder: 'placement-prep/resumes',
     allowed_formats: ['pdf'],
-    resource_type: 'raw',  // required for PDFs
+    resource_type: 'image',  // required for PDFs
   },
 });
 
