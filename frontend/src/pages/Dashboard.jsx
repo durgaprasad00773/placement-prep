@@ -17,6 +17,7 @@ const Dashboard = () => {
   { label: 'Resume Manager', description: 'Store and manage resume versions', icon: <img src="resume_logo.png" alt="Resume" className="w-8 h-8 object-contain" />, path: '/resume-manager' },
   { label: 'Analytics', description: 'View your prep progress and stats', icon: '📊', path: '/analytics' },
   { label: 'Revision List', description: 'Problems marked for revision', icon: '📌', path: '/revision-list' },
+  { label: 'Resume Analyzer', description: 'Analyze your Resume', icon:<img src="/document.png" alt="Resume" className="w-8 h-8 object-contain" /> , path: '/analyze-resume' }
 ];
 
 const getInitials = (name) => {

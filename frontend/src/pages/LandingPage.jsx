@@ -96,7 +96,7 @@ const LandingPage = () => {
         <div className="max-w-4xl mx-auto text-center">
           <span className="text-xs font-semibold px-5 py-2 rounded-full mb-6 inline-block"
             style={{ backgroundColor: '#2e86de', color: 'white' }}>
-            Built for CS Students <br/> By Mechanical student
+            Built for CS Students
           </span>
           <h2 className="text-5xl font-bold text-white mb-6 leading-tight">
             Your All-in-One<br />
@@ -228,7 +228,7 @@ const LandingPage = () => {
             <h1 className="text-xl font-bold" style={{ color: 'white' }}>PrepTrack</h1>
           </div>
           <p className="text-sm" style={{ color: '#c5d5ea' }}>
-            Built for CS students, by Mechanical student.
+            Built for CS students.
           </p>
           <div className="flex gap-6">
             <span onClick={() => navigate('/login')}

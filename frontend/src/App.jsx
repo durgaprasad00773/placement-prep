@@ -13,6 +13,7 @@ import ResumeManager from './pages/ResumeManager.jsx';
 import Analytics from './pages/Analytics.jsx';
 import RevisionList from './pages/RevisionList.jsx';
 import LandingPage from './pages/LandingPage.jsx';
+import ResumeAnalyzer from './pages/ResumeAnalyzer.jsx';
 
 // Defined OUTSIDE App
 const HomeRoute = () => {
@@ -45,6 +46,7 @@ function App() {
           <Route path="/resume-manager" element={<ProtectedRoute><ResumeManager /></ProtectedRoute>} />
           <Route path="/analytics" element={<ProtectedRoute><Analytics /></ProtectedRoute>} />
           <Route path="/revision-list" element={<ProtectedRoute><RevisionList /></ProtectedRoute>} />
+          <Route path="/analyze-resume" element={<ProtectedRoute><ResumeAnalyzer/></ProtectedRoute>}/>
         </Routes>
       </BrowserRouter>
     </AuthProvider>

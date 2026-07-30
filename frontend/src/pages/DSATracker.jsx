@@ -29,6 +29,11 @@ const DSATracker = () => {
   const [filterStatus, setFilterStatus] = useState('');
   const [filterTopic, setFilterTopic] = useState('');
 
+  // Inline status-edit state
+  const [editingId, setEditingId] = useState(null);
+  const [editStatus, setEditStatus] = useState('Unsolved');
+  const [savingEdit, setSavingEdit] = useState(false);
+
   const fetchProblems = async () => {
     try {
       const res = await api.get('/problems');
@@ -80,7 +85,40 @@ const DSATracker = () => {
     } catch (err) {
       setError('Failed to update revision status');
     }
-``};
+  };
+
+  // Start editing a row's status
+  const handleEditClick = (p) => {
+    setEditingId(p.id);
+    // Revisit no longer exists as a status option, so fall back to Unsolved
+    setEditStatus(p.status === 'Solved' ? 'Solved' : 'Unsolved');
+  };
+
+  const handleCancelEdit = () => {
+    setEditingId(null);
+  };
+
+  const handleSaveEdit = async (id) => {
+  setSavingEdit(true);
+  try {
+    const problem = problems.find(p => p.id === id);
+    await api.put(`/problems/${id}`, {
+      title: problem.title,
+      platform: problem.platform,
+      difficulty: problem.difficulty,
+      topic: problem.topic,
+      status: editStatus,
+      notes: problem.notes,
+      url: problem.url,
+    });
+    setEditingId(null);
+    fetchProblems();
+  } catch (err) {
+    setError('Failed to update status');
+  } finally {
+    setSavingEdit(false);
+  }
+};
 
   const clearFilters = () => {
     setSearch('');
@@ -98,7 +136,6 @@ const DSATracker = () => {
 
   const statusColor = (status) => {
     if (status === 'Solved') return { bg: '#f0fdf4', text: '#16a34a' };
-    if (status === 'Revisit') return { bg: '#fffbeb', text: '#d97706' };
     return { bg: '#f0f4f8', text: '#4a6fa5' };
   };
 
@@ -188,7 +225,6 @@ const DSATracker = () => {
               <option value="">All Statuses</option>
               <option>Solved</option>
               <option>Unsolved</option>
-              <option>Revisit</option>
             </select>
 
             <select
@@ -275,7 +311,6 @@ const DSATracker = () => {
                     style={{ border: '1.5px solid #c5d5ea', color: '#1a3a6b' }}>
                     <option>Unsolved</option>
                     <option>Solved</option>
-                    <option>Revisit</option>
                   </select>
                 </div>
 
@@ -324,7 +359,7 @@ const DSATracker = () => {
         <div className="bg-white rounded-xl shadow-sm overflow-hidden" style={{ border: '1.5px solid #c5d5ea' }}>
           {filteredProblems.length === 0 ? (
             <div className="p-12 text-center">
-              <p className="text-4xl mb-3">🧩</p>
+              <p className="text-4xl mb-3"><img src='/dsa_logo.png'/></p>
               <p className="font-medium" style={{ color: '#1a3a6b' }}>
                 {isFiltered ? 'No problems match your filters' : 'No problems tracked yet'}
               </p>
@@ -359,20 +394,57 @@ const DSATracker = () => {
                     </td>
                     <td className="px-4 py-3" style={{ color: '#4a6fa5' }}>{p.topic || '—'}</td>
                     <td className="px-4 py-3">
-                      <span className="px-2 py-1 rounded-full text-xs font-medium"
-                        style={{ backgroundColor: statusColor(p.status).bg, color: statusColor(p.status).text }}>
-                        {p.status}
-                      </span>
+                      {editingId === p.id ? (
+                        <select
+                          value={editStatus}
+                          onChange={e => setEditStatus(e.target.value)}
+                          className="rounded-lg px-2 py-1 text-xs outline-none"
+                          style={{ border: '1.5px solid #c5d5ea', color: '#1a3a6b' }}
+                        >
+                          <option>Unsolved</option>
+                          <option>Solved</option>
+                        </select>
+                      ) : (
+                        <span className="px-2 py-1 rounded-full text-xs font-medium"
+                          style={{ backgroundColor: statusColor(p.status).bg, color: statusColor(p.status).text }}>
+                          {p.status}
+                        </span>
+                      )}
                     </td>
                     <td className="px-4 py-3">
-                      <button onClick={() => handleDelete(p.id)}
-                        className="text-xs px-3 py-1 rounded-lg transition"
-                        style={{ backgroundColor: '#fee2e2', color: '#dc2626' }}>
-                        Delete
-                      </button>
-                    </td>
-                    <td className="px-4 py-3">
-                      <div className="flex gap-2">
+                      <div className="flex gap-2 flex-wrap">
+                        {editingId === p.id ? (
+                          <>
+                            <button
+                              onClick={() => handleSaveEdit(p.id)}
+                              disabled={savingEdit}
+                              className="text-xs px-3 py-1 rounded-lg transition"
+                              style={{ backgroundColor: '#f0fdf4', color: '#16a34a' }}
+                            >
+                              {savingEdit ? 'Saving...' : 'Save'}
+                            </button>
+                            <button
+                              onClick={handleCancelEdit}
+                              className="text-xs px-3 py-1 rounded-lg transition"
+                              style={{ backgroundColor: '#f0f4f8', color: '#4a6fa5' }}
+                            >
+                              Cancel
+                            </button>
+                          </>
+                        ) : (
+                          <button
+                            onClick={() => handleEditClick(p)}
+                            className="text-xs px-3 py-1 rounded-lg transition"
+                            style={{ backgroundColor: '#eff6ff', color: '#2e86de' }}
+                          >
+                            Edit
+                          </button>
+                        )}
+                        <button onClick={() => handleDelete(p.id)}
+                          className="text-xs px-3 py-1 rounded-lg transition"
+                          style={{ backgroundColor: '#fee2e2', color: '#dc2626' }}>
+                          Delete
+                        </button>
                         <button
                           onClick={() => handleToggleRevision(p.id, p.needs_revision)}
                           className="text-xs px-3 py-1 rounded-lg transition"
@@ -382,13 +454,6 @@ const DSATracker = () => {
                           }}
                         >
                           {p.needs_revision ? '📌 Revision' : 'Mark Revision'}
-                        </button>
-                        <button
-                          onClick={() => handleDelete(p.id)}
-                          className="text-xs px-3 py-1 rounded-lg transition"
-                          style={{ backgroundColor: '#fee2e2', color: '#dc2626' }}
-                        >
-                          Delete
                         </button>
                       </div>
                     </td>
