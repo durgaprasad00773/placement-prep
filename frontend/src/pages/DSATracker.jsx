@@ -359,7 +359,7 @@ const DSATracker = () => {
         <div className="bg-white rounded-xl shadow-sm overflow-hidden" style={{ border: '1.5px solid #c5d5ea' }}>
           {filteredProblems.length === 0 ? (
             <div className="p-12 text-center">
-              <p className="text-4xl mb-3"><img src='/dsa_logo.png'/></p>
+              <p className="text-4xl mb-3"></p>
               <p className="font-medium" style={{ color: '#1a3a6b' }}>
                 {isFiltered ? 'No problems match your filters' : 'No problems tracked yet'}
               </p>

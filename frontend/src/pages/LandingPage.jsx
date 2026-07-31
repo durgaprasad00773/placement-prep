@@ -48,8 +48,8 @@ const features = [
   },
   {
     icon: '🗺️',
-    label: 'Company Roadmaps', 
-    description: 'AI roadmap for your target company.',
+    title: 'Company Roadmaps', 
+    description: 'A Personalized, End-to-End AI Roadmap Tailored to the Skills and Interview Expectations of Your Target Company',
   }
 ];
 
