@@ -181,3 +181,140 @@ Return a JSON object with exactly this structure:
     res.status(500).json({ message: 'Internal server error' });
   }
 };
+
+// AI Mock Interview Generator
+export const generateInterview = async (req, res) => {
+  const user_id = req.user.userId;
+  const {
+    company = 'Google',
+    role = 'SDE Intern',
+    round = 'Technical',
+    topics = []
+  } = req.body;
+
+  try {
+    const completion = await groq.chat.completions.create({
+      model: 'llama-3.3-70b-versatile',
+      messages: [
+        {
+          role: 'system',
+          content: `You are an experienced technical interviewer at ${company}.
+          You conduct ${round} interviews for ${role} positions.
+          Generate realistic interview questions that ${company} actually asks.
+          Always respond in valid JSON format only, no markdown, no extra text.`
+        },
+        {
+          role: 'user',
+          content: `Generate a ${round} interview for ${role} position at ${company}.
+          ${topics.length > 0 ? `Focus on these topics: ${topics.join(', ')}` : ''}
+          
+          Return a JSON object with exactly this structure:
+          {
+            "interview_title": "<title>",
+            "company": "${company}",
+            "role": "${role}",
+            "round": "${round}",
+            "duration": "<estimated duration>",
+            "instructions": "<brief instructions for the candidate>",
+            "questions": [
+              {
+                "id": 1,
+                "type": "<DSA/System Design/Behavioral/Conceptual>",
+                "difficulty": "<Easy/Medium/Hard>",
+                "question": "<full question text>",
+                "hints": ["<hint 1>", "<hint 2>"],
+                "expected_topics": ["<topic 1>", "<topic 2>"],
+                "time_limit": "<suggested time>"
+              }
+            ]
+          }
+          
+          Generate exactly 5 questions appropriate for ${company}'s ${round} interview style.`
+        }
+      ],
+      temperature: 0.7,
+      max_tokens: 2000,
+    });
+
+    const rawResponse = completion.choices[0].message.content;
+
+    let interview;
+    try {
+      const cleaned = rawResponse.replace(/```json|```/g, '').trim();
+      interview = JSON.parse(cleaned);
+    } catch (parseError) {
+      console.error('Parse error:', parseError);
+      return res.status(500).json({ message: 'Failed to parse AI response' });
+    }
+
+    res.status(200).json({
+      message: 'Interview generated successfully',
+      interview
+    });
+
+  } catch (error) {
+    console.error('Generate interview error:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+// Evaluate interview answer
+export const evaluateAnswer = async (req, res) => {
+  const { question, answer, company, role } = req.body;
+
+  if (!question || !answer) {
+    return res.status(400).json({ message: 'Question and answer are required' });
+  }
+
+  try {
+    const completion = await groq.chat.completions.create({
+      model: 'llama-3.3-70b-versatile',
+      messages: [
+        {
+          role: 'system',
+          content: `You are an experienced technical interviewer at ${company}.
+          Evaluate candidate answers honestly and constructively.
+          Always respond in valid JSON format only, no markdown, no extra text.`
+        },
+        {
+          role: 'user',
+          content: `Evaluate this interview answer:
+
+Company: ${company}
+Role: ${role}
+Question: ${question}
+Candidate Answer: ${answer}
+
+Return a JSON object with exactly this structure:
+{
+  "score": <number 1-10>,
+  "verdict": "<Excellent/Good/Average/Poor>",
+  "feedback": "<detailed feedback on the answer>",
+  "what_was_good": ["<good point 1>", "<good point 2>"],
+  "what_was_missing": ["<missing point 1>", "<missing point 2>"],
+  "ideal_answer_outline": "<brief outline of what an ideal answer looks like>",
+  "follow_up_question": "<a follow up question the interviewer might ask>"
+}`
+        }
+      ],
+      temperature: 0.3,
+      max_tokens: 1000,
+    });
+
+    const rawResponse = completion.choices[0].message.content;
+
+    let evaluation;
+    try {
+      const cleaned = rawResponse.replace(/```json|```/g, '').trim();
+      evaluation = JSON.parse(cleaned);
+    } catch (parseError) {
+      return res.status(500).json({ message: 'Failed to parse AI response' });
+    }
+
+    res.status(200).json({ evaluation });
+
+  } catch (error) {
+    console.error('Evaluate answer error:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};

@@ -14,6 +14,7 @@ import Analytics from './pages/Analytics.jsx';
 import RevisionList from './pages/RevisionList.jsx';
 import LandingPage from './pages/LandingPage.jsx';
 import ResumeAnalyzer from './pages/ResumeAnalyzer.jsx';
+import MockInterview from './pages/MockInterview.jsx';
 
 // Defined OUTSIDE App
 const HomeRoute = () => {
@@ -47,6 +48,9 @@ function App() {
           <Route path="/analytics" element={<ProtectedRoute><Analytics /></ProtectedRoute>} />
           <Route path="/revision-list" element={<ProtectedRoute><RevisionList /></ProtectedRoute>} />
           <Route path="/analyze-resume" element={<ProtectedRoute><ResumeAnalyzer/></ProtectedRoute>}/>
+          <Route path="/mock-interview" element={<ProtectedRoute><MockInterview/></ProtectedRoute>}/>
+          <Route path="/ai-coach" element={<ProtectedRoute><MockInterview/></ProtectedRoute>}/>
+
         </Routes>
       </BrowserRouter>
     </AuthProvider>
