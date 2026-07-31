@@ -46,6 +46,11 @@ const features = [
     title: 'AI Mock Interviews',
     description: 'Practice with AI-generated interview questions tailored to your target companies.',
   },
+  {
+    icon: '🗺️',
+    label: 'Company Roadmaps', 
+    description: 'AI roadmap for your target company.',
+  }
 ];
 
 const steps = [

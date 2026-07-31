@@ -17,9 +17,10 @@ const Dashboard = () => {
   { label: 'Resume Manager', description: 'Store and manage resume versions', icon: <img src="resume_logo.png" alt="Resume" className="w-8 h-8 object-contain" />, path: '/resume-manager' },
   { label: 'Analytics', description: 'View your prep progress and stats', icon: '📊', path: '/analytics' },
   { label: 'Revision List', description: 'Problems marked for revision', icon: '📌', path: '/revision-list' },
-  { label: 'AI Daily Coach', description: 'Get personalized daily targets based on your progress. AI adapts your plan if you miss targets.', icon:<img src="/coach.png" alt="AI coach" className="w-8 h-8 object-contain" /> , path: '/' },
-  { label: 'Resume Analyzer', description: 'Get AI-powered feedback on your resume. Identify gaps and improve before applying.', icon:<img src="/document.png" alt="Resume" className="w-8 h-8 object-contain" /> , path: '/analyze-resume' },
-  { label: 'AI Mock Interviews', description: 'Practice with AI-generated interview questions tailored to your target companies.', icon:<img src="/ai_interviewer.png" alt="AI interviewer" className="w-8 h-8 object-contain" /> , path: '/mock-interview'}
+  { label: 'AI Daily Coach', description: 'Personalized daily targets. AI adapts if you fall behind.', icon:<img src="/coach.png" alt="AI coach" className="w-8 h-8 object-contain" /> , path: '/ai-coach' },
+  { label: 'Resume Analyzer', description: 'AI feedback on your resume. Fix gaps before applying.', icon:<img src="/document.png" alt="Resume" className="w-8 h-8 object-contain" /> , path: '/analyze-resume' },
+  { label: 'AI Mock Interviews', description: 'Company-specific questions. Get evaluated instantly.', icon:<img src="/ai_interviewer.png" alt="AI interviewer" className="w-8 h-8 object-contain" /> , path: '/mock-interview'},
+  { label: 'Company Roadmaps', description: 'AI roadmap for your target company.', icon: '🗺️', path: '/company-roadmap' },
 ];
 
 const getInitials = (name) => {
@@ -33,10 +34,10 @@ const getInitials = (name) => {
     <div className="min-h-screen" style={{ backgroundColor: '#f0f4f8' }}>
       {/* Navbar */}
       <nav className="bg-white shadow-sm px-8 py-4 flex justify-between items-center" style={{ borderBottom: '2px solid #c5d5ea' }}>
-      <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2">
             <img src="https://imgs.search.brave.com/4num3GouoaQ-kNcQtc1glN1ALOpz4Zm_mtaVFLpK-_s/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9maWxl/cy5wcmVwaW5zdGEu/Y29tLzIwMjIvMDcv/cGxhY2VtZW50LXBy/ZXBhcmF0aW9uLWJv/b2tzLWZvci1lbmdp/bmVlcmluZy1zdHVk/ZW50cy53ZWJw" alt="PrepTrack" className="w-8 h-8 object-contain" />
             <h1 className="text-xl font-bold" style={{ color: '#1a3a6b' }}>PrepTrack</h1>
-          </div>
+        </div>
         <div className="flex items-center gap-4">
           <div
             onClick={() => navigate('/profile')}
