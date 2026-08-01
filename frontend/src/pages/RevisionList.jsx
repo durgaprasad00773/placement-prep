@@ -48,18 +48,23 @@ const RevisionList = () => {
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#f0f4f8' }}>
       {/* Navbar */}
-      <nav className="bg-white shadow-sm px-8 py-4 flex justify-between items-center" style={{ borderBottom: '2px solid #c5d5ea' }}>
+      <nav className="bg-white shadow-sm px-4 md:px-8 py-4 flex justify-between items-center"
+        style={{ borderBottom: '2px solid #c5d5ea' }}>
         <div className="flex items-center gap-2">
             <img src="https://imgs.search.brave.com/4num3GouoaQ-kNcQtc1glN1ALOpz4Zm_mtaVFLpK-_s/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9maWxl/cy5wcmVwaW5zdGEu/Y29tLzIwMjIvMDcv/cGxhY2VtZW50LXBy/ZXBhcmF0aW9uLWJv/b2tzLWZvci1lbmdp/bmVlcmluZy1zdHVk/ZW50cy53ZWJw" alt="PrepTrack" className="w-8 h-8 object-contain" />
             <h1 className="text-xl font-bold" style={{ color: '#1a3a6b' }}>PrepTrack</h1>
-          </div>
-        <div className="flex gap-4">
-          <span onClick={() => navigate('/dsa-tracker')} className="text-sm font-medium cursor-pointer" style={{ color: '#4a6fa5' }}>← DSA Tracker</span>
-          <span onClick={() => navigate('/dashboard')} className="text-sm font-medium cursor-pointer" style={{ color: '#4a6fa5' }}>Dashboard</span>
+        </div>
+        <div className="flex gap-3 md:gap-4">
+          <span onClick={() => navigate('/dsa-tracker')}
+            className="text-xs md:text-sm font-medium cursor-pointer"
+            style={{ color: '#4a6fa5' }}>← DSA Tracker</span>
+          <span onClick={() => navigate('/dashboard')}
+            className="text-xs md:text-sm font-medium cursor-pointer"
+            style={{ color: '#4a6fa5' }}>Dashboard</span>
         </div>
       </nav>
 
-      <div className="max-w-6xl mx-auto p-8">
+      <div className="max-w-6xl mx-auto p-4 md:p-8">
         {/* Header */}
         <div className="mb-6">
           <h2 className="text-2xl font-bold" style={{ color: '#1a3a6b' }}>Revision List</h2>
@@ -73,71 +78,124 @@ const RevisionList = () => {
         )}
 
         {problems.length === 0 ? (
-          <div className="bg-white rounded-xl p-12 text-center shadow-sm" style={{ border: '1.5px solid #c5d5ea' }}>
+          <div className="bg-white rounded-xl p-12 text-center shadow-sm"
+            style={{ border: '1.5px solid #c5d5ea' }}>
             <p className="text-4xl mb-3">✅</p>
             <p className="font-medium" style={{ color: '#1a3a6b' }}>No problems marked for revision</p>
             <p className="text-sm mt-1" style={{ color: '#4a6fa5' }}>
               Go to DSA Tracker and mark problems you want to revisit
             </p>
-            <button
-              onClick={() => navigate('/dsa-tracker')}
+            <button onClick={() => navigate('/dsa-tracker')}
               className="mt-4 text-white px-4 py-2 rounded-lg text-sm font-medium"
-              style={{ backgroundColor: '#1a3a6b' }}
-            >
+              style={{ backgroundColor: '#1a3a6b' }}>
               Go to DSA Tracker
             </button>
           </div>
         ) : (
-          <div className="bg-white rounded-xl shadow-sm overflow-hidden" style={{ border: '1.5px solid #c5d5ea' }}>
-            <table className="w-full text-sm">
-              <thead>
-                <tr style={{ backgroundColor: '#f0f4f8', borderBottom: '1.5px solid #c5d5ea' }}>
-                  {['Title', 'Topic', 'Difficulty', 'Revised', 'Times', 'Actions'].map(h => (
-                    <th key={h} className="text-left px-4 py-3 font-semibold" style={{ color: '#1a3a6b' }}>{h}</th>
+          <>
+            {/* Table - Desktop */}
+            <div className="hidden md:block bg-white rounded-xl shadow-sm overflow-hidden"
+              style={{ border: '1.5px solid #c5d5ea' }}>
+              <table className="w-full text-sm">
+                <thead>
+                  <tr style={{ backgroundColor: '#f0f4f8', borderBottom: '1.5px solid #c5d5ea' }}>
+                    {['Title', 'Topic', 'Difficulty', 'Revised', 'Times', 'Actions'].map(h => (
+                      <th key={h} className="text-left px-4 py-3 font-semibold"
+                        style={{ color: '#1a3a6b' }}>{h}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {problems.map((p, i) => (
+                    <tr key={p.id}
+                      style={{ borderBottom: '1px solid #c5d5ea', backgroundColor: i % 2 === 0 ? 'white' : '#f8fafc' }}>
+                      <td className="px-4 py-3 font-medium" style={{ color: '#1a3a6b' }}>
+                        {p.url ? (
+                          <a href={p.url} target="_blank" rel="noreferrer"
+                            className="hover:underline" style={{ color: '#2e86de' }}>
+                            {p.title}
+                          </a>
+                        ) : p.title}
+                      </td>
+                      <td className="px-4 py-3" style={{ color: '#4a6fa5' }}>{p.topic || '—'}</td>
+                      <td className="px-4 py-3 font-medium" style={{ color: difficultyColor(p.difficulty) }}>
+                        {p.difficulty || '—'}
+                      </td>
+                      <td className="px-4 py-3" style={{ color: '#4a6fa5' }}>
+                        {p.last_revised_at ? new Date(p.last_revised_at).toLocaleDateString() : '—'}
+                      </td>
+                      <td className="px-4 py-3">
+                        <span className="px-2 py-1 rounded-full text-xs font-medium"
+                          style={{ backgroundColor: '#eff6ff', color: '#2e86de' }}>
+                          {p.revision_count}x
+                        </span>
+                      </td>
+                      <td className="px-4 py-3">
+                        <button onClick={() => handleRemoveRevision(p.id)}
+                          className="text-xs px-3 py-1 rounded-lg"
+                          style={{ backgroundColor: '#fee2e2', color: '#dc2626' }}>
+                          Remove
+                        </button>
+                      </td>
+                    </tr>
                   ))}
-                </tr>
-              </thead>
-              <tbody>
-                {problems.map((p, i) => (
-                  <tr key={p.id}
-                    style={{ borderBottom: '1px solid #c5d5ea', backgroundColor: i % 2 === 0 ? 'white' : '#f8fafc' }}>
-                    <td className="px-4 py-3 font-medium" style={{ color: '#1a3a6b' }}>
+                </tbody>
+              </table>
+            </div>
+
+            {/* Cards - Mobile */}
+            <div className="md:hidden space-y-3">
+              {problems.map((p) => (
+                <div key={p.id} className="bg-white rounded-xl p-4 shadow-sm"
+                  style={{ border: '1.5px solid #c5d5ea' }}>
+                  <div className="flex justify-between items-start mb-2">
+                    <div className="flex-1">
                       {p.url ? (
                         <a href={p.url} target="_blank" rel="noreferrer"
-                          className="hover:underline" style={{ color: '#2e86de' }}>
+                          className="font-semibold text-sm hover:underline"
+                          style={{ color: '#2e86de' }}>
                           {p.title}
                         </a>
-                      ) : p.title}
-                    </td>
-                    <td className="px-4 py-3" style={{ color: '#4a6fa5' }}>{p.topic || '—'}</td>
-                    <td className="px-4 py-3 font-medium" style={{ color: difficultyColor(p.difficulty) }}>
-                      {p.difficulty || '—'}
-                    </td>
-                    <td className="px-4 py-3" style={{ color: '#4a6fa5' }}>
-                      {p.last_revised_at
-                        ? new Date(p.last_revised_at).toLocaleDateString()
-                        : '—'}
-                    </td>
-                    <td className="px-4 py-3">
-                      <span className="px-2 py-1 rounded-full text-xs font-medium"
-                        style={{ backgroundColor: '#eff6ff', color: '#2e86de' }}>
-                        {p.revision_count}x
+                      ) : (
+                        <p className="font-semibold text-sm" style={{ color: '#1a3a6b' }}>{p.title}</p>
+                      )}
+                    </div>
+                    <span className="px-2 py-0.5 rounded-full text-xs font-medium ml-2 shrink-0"
+                      style={{ backgroundColor: '#eff6ff', color: '#2e86de' }}>
+                      {p.revision_count}x
+                    </span>
+                  </div>
+
+                  <div className="flex flex-wrap gap-2 mb-3">
+                    {p.topic && (
+                      <span className="text-xs px-2 py-0.5 rounded"
+                        style={{ backgroundColor: '#f0f4f8', color: '#4a6fa5' }}>
+                        {p.topic}
                       </span>
-                    </td>
-                    <td className="px-4 py-3">
-                      <button
-                        onClick={() => handleRemoveRevision(p.id)}
-                        className="text-xs px-3 py-1 rounded-lg"
-                        style={{ backgroundColor: '#fee2e2', color: '#dc2626' }}
-                      >
-                        Remove
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                    )}
+                    {p.difficulty && (
+                      <span className="text-xs px-2 py-0.5 rounded font-medium"
+                        style={{ color: difficultyColor(p.difficulty), backgroundColor: '#f0f4f8' }}>
+                        {p.difficulty}
+                      </span>
+                    )}
+                    {p.last_revised_at && (
+                      <span className="text-xs px-2 py-0.5 rounded"
+                        style={{ backgroundColor: '#f0f4f8', color: '#4a6fa5' }}>
+                        📅 {new Date(p.last_revised_at).toLocaleDateString()}
+                      </span>
+                    )}
+                  </div>
+
+                  <button onClick={() => handleRemoveRevision(p.id)}
+                    className="text-xs px-3 py-1 rounded-lg"
+                    style={{ backgroundColor: '#fee2e2', color: '#dc2626' }}>
+                    Remove from Revision
+                  </button>
+                </div>
+              ))}
+            </div>
+          </>
         )}
       </div>
     </div>

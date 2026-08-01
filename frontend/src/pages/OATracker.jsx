@@ -361,8 +361,8 @@ const OATracker = () => {
           </div>
         )}
 
-        {/* OA Records Table */}
-        <div className="bg-white rounded-xl shadow-sm overflow-hidden"
+        {/* OA Records Table - Desktop */}
+        <div className="hidden md:block bg-white rounded-xl shadow-sm overflow-hidden"
           style={{ border: '1.5px solid #c5d5ea' }}>
           {oas.length === 0 ? (
             <div className="p-12 text-center">
@@ -389,29 +389,21 @@ const OATracker = () => {
                         ? '#fffbeb'
                         : i % 2 === 0 ? 'white' : '#f8fafc'
                     }}>
-                    <td className="px-4 py-3 font-medium" style={{ color: '#1a3a6b' }}>
-                      {oa.company}
-                    </td>
+                    <td className="px-4 py-3 font-medium" style={{ color: '#1a3a6b' }}>{oa.company}</td>
                     <td className="px-4 py-3" style={{ color: '#4a6fa5' }}>{oa.role || '—'}</td>
                     <td className="px-4 py-3" style={{ color: '#4a6fa5' }}>
                       {oa.oa_date ? new Date(oa.oa_date).toLocaleDateString() : '—'}
                     </td>
                     <td className="px-4 py-3" style={{ color: '#4a6fa5' }}>{oa.platform || '—'}</td>
-                    <td className="px-4 py-3 font-medium"
-                      style={{ color: difficultyColor(oa.difficulty) }}>
+                    <td className="px-4 py-3 font-medium" style={{ color: difficultyColor(oa.difficulty) }}>
                       {oa.difficulty || '—'}
                     </td>
-                    <td className="px-4 py-3" style={{ color: '#4a6fa5' }}>
-                      {oa.num_questions || '—'}
-                    </td>
+                    <td className="px-4 py-3" style={{ color: '#4a6fa5' }}>{oa.num_questions || '—'}</td>
                     <td className="px-4 py-3">
                       {editingId === oa.id ? (
-                        <select
-                          value={editStatus}
-                          onChange={e => setEditStatus(e.target.value)}
+                        <select value={editStatus} onChange={e => setEditStatus(e.target.value)}
                           className="rounded-lg px-2 py-1 text-xs outline-none"
-                          style={{ border: '1.5px solid #c5d5ea', color: '#1a3a6b' }}
-                        >
+                          style={{ border: '1.5px solid #c5d5ea', color: '#1a3a6b' }}>
                           <option>Pending</option>
                           <option>Cleared</option>
                           <option>Failed</option>
@@ -419,10 +411,7 @@ const OATracker = () => {
                         </select>
                       ) : (
                         <span className="px-2 py-1 rounded-full text-xs font-medium"
-                          style={{
-                            backgroundColor: statusColor(oa.status).bg,
-                            color: statusColor(oa.status).text
-                          }}>
+                          style={{ backgroundColor: statusColor(oa.status).bg, color: statusColor(oa.status).text }}>
                           {oa.status}
                         </span>
                       )}
@@ -431,30 +420,25 @@ const OATracker = () => {
                       <div className="flex gap-2">
                         {editingId === oa.id ? (
                           <>
-                            <button
-                              onClick={() => handleSaveEdit(oa)}
-                              disabled={savingEdit}
+                            <button onClick={() => handleSaveEdit(oa)} disabled={savingEdit}
                               className="text-xs px-3 py-1 rounded-lg"
                               style={{ backgroundColor: '#f0fdf4', color: '#16a34a' }}>
                               {savingEdit ? 'Saving...' : 'Save'}
                             </button>
-                            <button
-                              onClick={() => setEditingId(null)}
+                            <button onClick={() => setEditingId(null)}
                               className="text-xs px-3 py-1 rounded-lg"
                               style={{ backgroundColor: '#f0f4f8', color: '#4a6fa5' }}>
                               Cancel
                             </button>
                           </>
                         ) : (
-                          <button
-                            onClick={() => handleEditClick(oa)}
+                          <button onClick={() => handleEditClick(oa)}
                             className="text-xs px-3 py-1 rounded-lg"
                             style={{ backgroundColor: '#eff6ff', color: '#2e86de' }}>
                             Edit
                           </button>
                         )}
-                        <button
-                          onClick={() => handleDelete(oa.id)}
+                        <button onClick={() => handleDelete(oa.id)}
                           className="text-xs px-3 py-1 rounded-lg"
                           style={{ backgroundColor: '#fee2e2', color: '#dc2626' }}>
                           Delete
@@ -465,6 +449,103 @@ const OATracker = () => {
                 ))}
               </tbody>
             </table>
+          )}
+        </div>
+
+        {/* OA Cards - Mobile */}
+        <div className="md:hidden space-y-3">
+          {oas.length === 0 ? (
+            <div className="bg-white rounded-xl p-8 text-center shadow-sm"
+              style={{ border: '1.5px solid #c5d5ea' }}>
+              <p className="text-4xl mb-3">📝</p>
+              <p className="font-medium" style={{ color: '#1a3a6b' }}>No OA records yet</p>
+              <p className="text-sm mt-1" style={{ color: '#4a6fa5' }}>Click "+ Add OA" to get started</p>
+            </div>
+          ) : (
+            oas.map((oa) => (
+              <div key={oa.id} className="bg-white rounded-xl p-4 shadow-sm"
+                style={{
+                  border: `1.5px solid ${expiredOAs.find(e => e.id === oa.id) ? '#fcd34d' : '#c5d5ea'}`,
+                  backgroundColor: expiredOAs.find(e => e.id === oa.id) ? '#fffbeb' : 'white'
+                }}>
+                <div className="flex justify-between items-start mb-2">
+                  <div>
+                    <p className="font-semibold text-sm" style={{ color: '#1a3a6b' }}>{oa.company}</p>
+                    {oa.role && <p className="text-xs mt-0.5" style={{ color: '#4a6fa5' }}>{oa.role}</p>}
+                  </div>
+                  {editingId === oa.id ? (
+                    <select value={editStatus} onChange={e => setEditStatus(e.target.value)}
+                      className="rounded-lg px-2 py-1 text-xs outline-none"
+                      style={{ border: '1.5px solid #c5d5ea', color: '#1a3a6b' }}>
+                      <option>Pending</option>
+                      <option>Cleared</option>
+                      <option>Failed</option>
+                      <option>No Response</option>
+                    </select>
+                  ) : (
+                    <span className="px-2 py-0.5 rounded-full text-xs font-medium ml-2 shrink-0"
+                      style={{ backgroundColor: statusColor(oa.status).bg, color: statusColor(oa.status).text }}>
+                      {oa.status}
+                    </span>
+                  )}
+                </div>
+
+                <div className="flex flex-wrap gap-2 mb-3">
+                  {oa.oa_date && (
+                    <span className="text-xs px-2 py-0.5 rounded"
+                      style={{ backgroundColor: '#f0f4f8', color: '#4a6fa5' }}>
+                      📅 {new Date(oa.oa_date).toLocaleDateString()}
+                    </span>
+                  )}
+                  {oa.platform && (
+                    <span className="text-xs px-2 py-0.5 rounded"
+                      style={{ backgroundColor: '#f0f4f8', color: '#4a6fa5' }}>
+                      {oa.platform}
+                    </span>
+                  )}
+                  {oa.difficulty && (
+                    <span className="text-xs px-2 py-0.5 rounded font-medium"
+                      style={{ color: difficultyColor(oa.difficulty), backgroundColor: '#f0f4f8' }}>
+                      {oa.difficulty}
+                    </span>
+                  )}
+                  {oa.num_questions && (
+                    <span className="text-xs px-2 py-0.5 rounded"
+                      style={{ backgroundColor: '#f0f4f8', color: '#4a6fa5' }}>
+                      {oa.num_questions} Qs
+                    </span>
+                  )}
+                </div>
+
+                <div className="flex gap-2">
+                  {editingId === oa.id ? (
+                    <>
+                      <button onClick={() => handleSaveEdit(oa)} disabled={savingEdit}
+                        className="text-xs px-3 py-1 rounded-lg"
+                        style={{ backgroundColor: '#f0fdf4', color: '#16a34a' }}>
+                        {savingEdit ? 'Saving...' : 'Save'}
+                      </button>
+                      <button onClick={() => setEditingId(null)}
+                        className="text-xs px-3 py-1 rounded-lg"
+                        style={{ backgroundColor: '#f0f4f8', color: '#4a6fa5' }}>
+                        Cancel
+                      </button>
+                    </>
+                  ) : (
+                    <button onClick={() => handleEditClick(oa)}
+                      className="text-xs px-3 py-1 rounded-lg"
+                      style={{ backgroundColor: '#eff6ff', color: '#2e86de' }}>
+                      Edit
+                    </button>
+                  )}
+                  <button onClick={() => handleDelete(oa.id)}
+                    className="text-xs px-3 py-1 rounded-lg"
+                    style={{ backgroundColor: '#fee2e2', color: '#dc2626' }}>
+                    Delete
+                  </button>
+                </div>
+              </div>
+            ))
           )}
         </div>
       </div>
