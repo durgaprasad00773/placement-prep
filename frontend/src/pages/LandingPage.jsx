@@ -276,7 +276,7 @@ const LandingPage = () => {
             <h1 className="text-lg font-bold text-white">PrepTrack</h1>
           </div>
           <p className="text-xs md:text-sm text-center" style={{ color: '#c5d5ea' }}>
-            Built for CS students, by CS students.
+            Built for CS students.
           </p>
           <div className="flex gap-6">
             <span onClick={() => navigate('/login')}
