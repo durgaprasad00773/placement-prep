@@ -51,6 +51,11 @@ const features = [
     icon: '🗺️',
     title: 'Company Roadmaps',
     description: 'AI roadmap tailored to your target company and role.',
+  }, 
+  {
+    icon: '💬',
+    title: 'Experience Sharing',
+    description: 'Share and read experiences from other students.',
   }
 ];
 

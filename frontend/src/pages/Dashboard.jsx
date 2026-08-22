@@ -21,6 +21,7 @@ const Dashboard = () => {
   { label: 'Resume Analyzer', description: 'AI feedback on your resume. Fix gaps before applying.', icon:<img src="/document.png" alt="Resume" className="w-8 h-8 object-contain" /> , path: '/analyze-resume' },
   { label: 'AI Mock Interviews', description: 'Company-specific questions. Get evaluated instantly.', icon:<img src="/ai_interviewer.png" alt="AI interviewer" className="w-8 h-8 object-contain" /> , path: '/mock-interview'},
   { label: 'Company Roadmaps', description: 'AI roadmap for your target company.', icon: '🗺️', path: '/company-roadmap' },
+  {label: 'Experience Sharing', description: 'Share and read experiences from other students.', icon: '💬', path: '/experiences' },
 ];
 
 const getInitials = (name) => {

@@ -8,6 +8,7 @@ import notesRoutes from './routes/notes.routes.js';
 import resumeRoutes from './routes/resume.routes.js';
 import analyticsRoutes from './routes/analytics.routes.js';
 import aiRoutes from './routes/ai.routes.js';
+import experiencesRoutes from './routes/experiences.routes.js';
 
 const app = express();
 
@@ -37,6 +38,7 @@ app.use('/api/notes', notesRoutes);
 app.use('/api/resumes', resumeRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/ai', aiRoutes);
+app.use('/api/experiences', experiencesRoutes);
 
 app.get('/health', (req, res) => {
   res.json({ status: 'ok' });
