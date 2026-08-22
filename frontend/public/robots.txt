@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://placement-prep-gray.vercel.app/sitemap.xml
