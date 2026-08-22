@@ -139,17 +139,24 @@ const LandingPage = () => {
       {/* Hero Section */}
       <section style={{ backgroundColor: '#1a3a6b' }} className="py-16 md:py-24 px-4 md:px-8">
         <div className="max-w-4xl mx-auto text-center">
-          <span className="text-xs font-semibold px-4 py-1.5 rounded-full mb-6 inline-block"
-            style={{ backgroundColor: '#2e86de', color: 'white' }}>
-            Built for CS Students
+          <span
+            className="text-xs font-semibold px-4 py-1.5 rounded-full mb-6 inline-block"
+            style={{ backgroundColor: '#2e86de', color: 'white' }}
+          >
+            Built for Students Preparing for Software Placements
           </span>
+
           <h2 className="text-3xl md:text-5xl font-bold text-white mb-6 leading-tight">
-            Your All-in-One<br />
-            <span style={{ color: '#2e86de' }}>Placement Prep</span> Platform
+            PrepTrack — Your All-in-One<br />
+            <span style={{ color: '#2e86de' }}>Placement Preparation</span> Platform
           </h2>
-          <p className="text-base md:text-lg mb-10 px-2" style={{ color: '#c5d5ea' }}>
-            Track DSA problems, manage OAs, analyze your resume with AI,
-            and practice mock interviews — all in one place.
+
+          <p
+            className="text-base md:text-lg mb-10 px-2"
+            style={{ color: '#c5d5ea' }}
+          >
+            Track DSA problems, manage online assessments, analyze your resume with AI,
+            practice mock interviews, and follow company-specific roadmaps — all in one place.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-3 px-4">
             <button
